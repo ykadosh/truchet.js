@@ -2,9 +2,13 @@
   "name": "pattern.js",
   "version": "1.0.0",
   "description": "Create beautiful visual patterns with JavaScript",
-  "main": "index.js",
+  "main": "pattern.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:library": "webpack --config webpack/webpack.library.js",
+    "build:docs": "webpack --config webpack/webpack.docs.js --watch",
+    "dev:library": "webpack --config webpack/webpack.library.js --watch",
+    "dev:docs": "webpack-dev-server --config webpack/webpack.docs.js --open"
   },
   "repository": {
     "type": "git",
@@ -13,12 +17,18 @@
   "keywords": [
     "pattern",
     "truchet",
-    "backgrounds"
+    "backgrounds",
+    "visualization"
   ],
   "author": "Yoav Kadosh",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ykadosh/pattern.js/issues"
   },
-  "homepage": "https://github.com/ykadosh/pattern.js#readme"
+  "homepage": "https://github.com/ykadosh/pattern.js#readme",
+  "devDependencies": {
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
 }
