@@ -2,7 +2,7 @@ const {paths} = require('./webpack.constants.js');
 
 module.exports = {
   entry: paths.docs + '/index.js',
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   mode: 'development',
   output: {
     filename: 'index.min.js',
