@@ -4,7 +4,7 @@
   "description": "Create beautiful visual patterns with JavaScript",
   "main": "pattern.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha **/*.test.js --require babel-core/register",
     "build:library": "webpack --config webpack/webpack.library.js",
     "build:docs": "webpack --config webpack/webpack.docs.js --watch",
     "dev:library": "webpack --config webpack/webpack.library.js --watch",
@@ -30,7 +30,11 @@
     "webpack": "^4.27.1"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.2.0",
     "css-loader": "^2.0.1",
+    "mocha": "^5.2.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
