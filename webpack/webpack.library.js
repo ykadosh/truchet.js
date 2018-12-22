@@ -5,6 +5,9 @@ module.exports = {
   entry: paths.src + '/Pattern.js',
   devtool: hasArg('production') ? false : 'eval-source-map',
   mode: hasArg('production') ? 'production' : 'development',
+  optimization: {
+    minimize: hasArg('production') ? true : false,
+  },
   output: {
     filename: 'pattern.min.js',
     path: paths.root,
