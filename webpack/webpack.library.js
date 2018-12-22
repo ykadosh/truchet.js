@@ -1,9 +1,10 @@
-const {paths} = require('./webpack.constants.js');
+const {paths} = require('./webpack.constants');
+const {hasArg} = require('./webpack.utility');
 
 module.exports = {
   entry: paths.src + '/Pattern.js',
-  devtool: 'eval-source-map',
-  mode: 'production',
+  devtool: hasArg('production') ? false : 'eval-source-map',
+  mode: hasArg('production') ? 'production' : 'development',
   output: {
     filename: 'pattern.min.js',
     path: paths.root,

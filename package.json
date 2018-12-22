@@ -5,8 +5,8 @@
   "main": "pattern.min.js",
   "scripts": {
     "test": "mocha \"**/*.test.js\" --require babel-core/register",
-    "build:library": "webpack --config webpack/webpack.library.js",
-    "build:docs": "webpack --config webpack/webpack.docs.js --watch",
+    "build:library": "webpack --config webpack/webpack.library.js --production",
+    "build:docs": "webpack --config webpack/webpack.docs.js --production",
     "dev:library": "webpack --config webpack/webpack.library.js --watch",
     "dev:docs": "webpack-dev-server --config webpack/webpack.docs.js --open"
   },
