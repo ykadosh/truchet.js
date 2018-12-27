@@ -1,5 +1,5 @@
 {
-  "name": "pattern.js",
+  "name": "truchet.js",
   "version": "1.0.0",
   "description": "Create beautiful visual patterns with JavaScript",
   "main": "pattern.min.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ykadosh/pattern.js.git"
+    "url": "git+https://github.com/ykadosh/truchet.js.git"
   },
   "keywords": [
     "pattern",
@@ -23,9 +23,9 @@
   "author": "Yoav Kadosh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ykadosh/pattern.js/issues"
+    "url": "https://github.com/ykadosh/truchet.js/issues"
   },
-  "homepage": "https://github.com/ykadosh/pattern.js#readme",
+  "homepage": "https://github.com/ykadosh/truchet.js#readme",
   "peerDependencies": {
     "webpack": "^4.27.1"
   },
