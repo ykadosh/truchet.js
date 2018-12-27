@@ -1,4 +1,4 @@
-# pattern.js
+# truchet.js
 Create beautiful visual patterns with JavaScript
 
 ## Features
