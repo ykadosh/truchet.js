@@ -1,0 +1,37 @@
+@import '~style/colors';
+
+footer {
+    margin: 10px 15px;
+    line-height: 1em;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .user-actions {
+        display: flex;
+
+        a {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+            text-decoration: none;
+            color: $color-black;
+
+            &:hover {
+                color: $color-blue;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+                fill: $color-black;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .credits {
+
+    }
+}

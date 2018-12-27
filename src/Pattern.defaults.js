@@ -1,3 +1,3 @@
 export default {
-    target: null,
+    size: 100,
 };

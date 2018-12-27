@@ -1,5 +1,6 @@
 const {paths} = require('./webpack.constants');
 const {hasArg} = require('./webpack.utility');
+// const GenerateHTML = require('./plugins/GenerateHTML');
 
 module.exports = {
   entry: paths.docs + '/index.js',
@@ -17,14 +18,32 @@ module.exports = {
     compress: true,
     port: 9000
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      style: paths.docs + '/src/style'
+    }
+  },
   module: {
-    rules: [{
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
+      {
         test: /\.scss$/,
         use: [
           "style-loader", 
           "css-loader",
           "sass-loader"
         ]
-    }]
-  }
+      }
+    ]
+  },
+  plugins: [
+    // new GenerateHTML(),
+  ]
 };

@@ -1,14 +1,17 @@
 import Tile from './Tile';
 import Target from './Target';
+import defaults from './Pattern.defaults';
 
 export default class Pattern {
 
-    constructor(target) {
-        this.target = new Target(target, {tileWidth: 100, tileHeight: 100});
+    constructor(target, options = {}) {
+        this.options = {...defaults, ...options};
+        this.target = new Target(target, {tileWidth: this.options.size, tileHeight: this.options.size});
     }
 
     addTile(tile) {
-        this.target.registerTile(new Tile(tile, {height: 100, width: 100}));
+        const {size} = this.options;
+        this.target.registerTile(new Tile(tile, {height: size, width: size}));
     }
 
     removeTile(id) {
