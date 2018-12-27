@@ -1,5 +1,5 @@
 import React from 'react';
-import Pattern from '../../../../pattern.min.js';
+import Truchet from '../../../../truchet.min.js';
 import './Header.scss';
 
 export default class Header extends React.PureComponent {
@@ -12,7 +12,7 @@ export default class Header extends React.PureComponent {
 
     componentDidMount() {
         const size = 80;
-        const p = new Pattern(this.target.current, {size});
+        const p = new Truchet(this.target.current, {size});
         
         const createNode = (n, v = {}) => {
             n = document.createElementNS("http://www.w3.org/2000/svg", n);

@@ -1,8 +1,8 @@
 import Tile from './Tile';
 import Target from './Target';
-import defaults from './Pattern.defaults';
+import defaults from './Truchet.defaults';
 
-export default class Pattern {
+export default class Truchet {
 
     constructor(target, options = {}) {
         this.options = {...defaults, ...options};

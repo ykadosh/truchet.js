@@ -1,8 +1,8 @@
 {
-  "name": "truchet.js",
+  "name": "truchet",
   "version": "1.0.0",
   "description": "Create beautiful visual patterns with JavaScript",
-  "main": "pattern.min.js",
+  "main": "truchet.min.js",
   "scripts": {
     "test": "mocha \"**/*.test.js\" --require babel-core/register",
     "build:library": "webpack --config webpack/webpack.library.js --production",

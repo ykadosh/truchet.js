@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in pattern.js! Issues, PRs and suggestions are welcome.
+Thank you for your interest in truchet.js! Issues, PRs and suggestions are welcome.
 
 ### Setting up a development environment
 

@@ -2,16 +2,16 @@ const {paths} = require('./webpack.constants');
 const {hasArg} = require('./webpack.utility');
 
 module.exports = {
-  entry: paths.src + '/Pattern.js',
+  entry: paths.src + '/Truchet.js',
   devtool: hasArg('production') ? false : 'eval-source-map',
   mode: hasArg('production') ? 'production' : 'development',
   optimization: {
     minimize: hasArg('production') ? true : false,
   },
   output: {
-    filename: 'pattern.min.js',
+    filename: 'truchet.min.js',
     path: paths.root,
-    library: 'Pattern',
+    library: 'truchet',
     libraryTarget: 'umd'
   }
 };
