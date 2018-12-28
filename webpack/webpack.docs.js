@@ -19,10 +19,7 @@ module.exports = {
     port: 9000
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
-    alias: {
-      style: paths.docs + '/src/style'
-    }
+    extensions: ['.js', '.jsx', '.json']
   },
   module: {
     rules: [
@@ -38,7 +35,15 @@ module.exports = {
         use: [
           "style-loader", 
           "css-loader",
-          "sass-loader"
+          "sass-loader",
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: [
+                paths.docs + '/src/style/colors.scss'
+              ]
+            }
+          }
         ]
       }
     ]
