@@ -1,0 +1,11 @@
+$break-small: 770px;
+$break-large: 1100px;
+
+@mixin breakpoint($size) {
+    @if $size == small {
+        @media screen and (max-width: $break-small) { @content; }
+    }
+    @if $size == large {
+        @media screen and (max-width: $break-large) { @content; }
+    }
+  }
