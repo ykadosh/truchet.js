@@ -25,6 +25,11 @@ footer {
                 height: 20px;
                 fill: $color-black;
                 margin-right: 5px;
+
+                &.icon-npm {
+                    width: 42px;
+                    margin-left: -10px;
+                }
             }
         }
     }
