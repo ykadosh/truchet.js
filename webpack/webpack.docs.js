@@ -1,25 +1,29 @@
 const {paths} = require('./webpack.constants');
 const {hasArg} = require('./webpack.utility');
-// const GenerateHTML = require('./plugins/GenerateHTML');
+const renderer = require('./plugins/MarkdownRenderer');
+const GenerateHTML = require('./plugins/GenerateHTML');
 
 module.exports = {
-  entry: paths.docs + '/index.js',
+  entry: paths.docs + '/src/bootstrap.js',
   devtool: hasArg('production') ? false : 'eval-source-map',
   mode: hasArg('production') ? 'production' : 'development',
   output: {
     filename: 'index.min.js',
-    path: paths.docs,
+    path: paths.docs + '/dist/',
   },
   optimization: {
     minimize: hasArg('production') ? true : false,
   },
   devServer: {
-    contentBase: paths.docs,
+    contentBase: paths.docs + '/dist/',
     compress: true,
     port: 9000
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      truchet: paths.src + '/Truchet.js'
+    }
   },
   module: {
     rules: [
@@ -46,10 +50,17 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {loader: "html-loader"},
+          {loader: "markdown-loader", options: {renderer}}
+        ]
       }
     ]
   },
   plugins: [
-    // new GenerateHTML(),
+    new GenerateHTML(),
   ]
 };
