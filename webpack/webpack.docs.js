@@ -9,13 +9,13 @@ module.exports = {
   mode: hasArg('production') ? 'production' : 'development',
   output: {
     filename: 'index.min.js',
-    path: paths.docs + '/dist/',
+    path: paths.docs,
   },
   optimization: {
     minimize: hasArg('production') ? true : false,
   },
   devServer: {
-    contentBase: paths.docs + '/dist/',
+    contentBase: paths.docs,
     compress: true,
     port: 9000
   },
