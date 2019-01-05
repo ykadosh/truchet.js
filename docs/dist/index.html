@@ -7,7 +7,54 @@
     <title>Truchet.js</title>
   </head>
   <body>
-    <div id="app"></div>
+    <h2 id="truchet-tiles">Truchet Tiles</h2>
+<p>Truchet tiles are square tiles decorated in such a way that when they are placed in a random orientation on a plane, they create visually appealing patterns.</p>
+<p><strong>Truchet.js</strong> is a small library aimed at simplifying the creation of these visual patterns in an environment where the canvas size is unknown (i.e the web). Truchet.js is not a tool for creating patterns, but rather a tool for applying these patterns on a given canvas, and updating it when applicable if it&#39;s dimensions change.</p>
+<p>But enough talking, let&#39;s get started!</p>
+<h2 id="installation">Installation</h2>
+<h4 id="npm">NPM</h4>
+<p>Install with <a href="https://www.npmjs.com/">npm</a>, or <a href="https://yarnpkg.com/">Yarn</a>:</p>
+<pre><code class="language-undefined">npm i truchet --save</code></pre><p>Use with <a href="https://nodejs.org/en/">Node.js</a>, or <a href="https://webpack.github.io/">webpack</a>:</p>
+<pre><code class="language-undefined">const Truchet = require(&apos;truchet&apos;);</code></pre><p>Or, if you are using ES6:</p>
+<pre><code class="language-undefined">import Truchet from &apos;truchet&apos;;</code></pre><h4 id="cdn">CDN</h4>
+<p>Alternatively you can add a <code>&lt;script&gt;</code> tag in your document&#39;s head, and it will export a global <code>Truncate</code> class:</p>
+<pre><code class="language-undefined">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="magical-patterns">Magical Patterns</h2>
+<p>The first thing you need to do is create a tile that is asymmetric, so that it has more than one orientation. You can use any HTML element that you like, but in the next examples
+we&#39;ll be using SVG.</p>
+<p>You can use a library like <a href="https://svgjs.com/">SVG.js</a>, but for our purpose, a simple utility function will suffice:</p>
+<pre><code class="language-undefined">// A function for creating SVG elements
+const createNode = (n, v = {}) =&gt; {
+    n = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, n);
+    Object.keys(v).forEach(p =&gt; {
+        n.setAttributeNS(null, p, v[p]);
+    })
+    return n;
+}</code></pre><p>Now let&#39;s create a tile. Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges, and will have a size of <code>100</code> pixels.
+We can use the above function to create a tile from 2 paths. The resulting SVG should look like this when rendered:</p>
+<example id="1">g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 0,50 A 50,50 0 0 0 50 0&apos;}));
+g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 50,100 A 50,50 0 0 1 100 50&apos;}));</example><p>We can now use <strong>Truchet.js</strong> to create a visual pattern from this tile. The <code>Truchet</code> instance expects a DOM element as its first
+argument in which it will render the tiles. In our case, it should be an <code>&lt;svg/&gt;</code> element.</p>
+<example id="2">const target = document.getElementById(&apos;target&apos;);
+const truchet = new Truchet(target, {size: 100});
+
+truchet.addTile({
+    id: &apos;a&apos;,
+    render: () =&gt; {
+        // We need to wrap our 2 paths in a &lt;g/&gt; since we can only return a single DOM element.
+        const g = createNode(&apos;g&apos;);
+        g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 0,50 A 50,50 0 0 0 50 0&apos;}));
+        g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 50,100 A 50,50 0 0 1 100 50&apos;}));
+        return g;
+    }
+});
+
+truchet.render();</example><p>This looks nice, but not very exciting. Let&#39;s add some randomness to the mix by randomly rotating the tiles.
+We can do this using the <code>rotate</code> argument:</p>
+<example id="3">truchet.addTile({
+    id: &apos;a&apos;,
+    render: () =&gt; {...},
+    rotate: [0, 90] // This will cause the tile to randomly receive a rotation of 0 or 90 degrees.
+});</example>
     <script src="index.min.js"></script>
   </body>
 </html>

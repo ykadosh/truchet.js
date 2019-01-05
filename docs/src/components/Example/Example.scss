@@ -1,0 +1,52 @@
+.example {
+    display: flex;
+    margin: 25px -15px;
+    background-color: $color-yellow;
+
+    @include breakpoint(large) {
+        flex-direction: column-reverse;
+    }
+
+    .result {
+        flex-basis: 50%;
+        border-right: 4px solid $color-blue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+
+        @include breakpoint(large) {
+            border-right: none;
+            border-top: 4px solid $color-blue;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            
+            .rect {
+                stroke: $color-blue;
+                stroke-width: 2px;
+                stroke-dasharray: 6px 3px;
+                fill: none;
+            }
+
+            .path {
+                stroke: $color-blue;
+                stroke-width: 8px;
+                fill: none;
+            }
+        }
+    }
+
+    .code {
+        flex-basis: 50%;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        font-family: monospace;
+        color: $color-blue;
+        white-space: pre;
+        overflow: auto;
+    }
+}

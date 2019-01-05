@@ -1,5 +1,5 @@
 import React from 'react';
-import Truchet from '../../../../truchet.min.js';
+import Truchet from 'truchet';
 import './Header.scss';
 
 export default class Header extends React.PureComponent {
@@ -33,11 +33,17 @@ export default class Header extends React.PureComponent {
         const rect = (_class, width, height) => createNode('rect', {class: _class, width, height});
         const circle = (_class, cx, cy, r) => createNode('circle', {class: _class, cx, cy, r});
         
-        p.addTile(g([
-            // rect('rect', 100, 100),
-            path('arc', `M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
-            path('arc', `M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
-        ]));
+        p.addTile({
+            id: 'a',
+            render: () => (
+                g([
+                    // rect('rect', 100, 100),
+                    path('arc', `M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
+                    path('arc', `M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
+                ])
+            ),
+            rotate: [0, 90]
+        });
         
         p.render();
         

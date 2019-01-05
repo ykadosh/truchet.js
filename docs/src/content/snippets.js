@@ -18,6 +18,13 @@ const g = children => {
 const path = d => createNode('path', {class: 'path', d});
 const rect = (width, height) => createNode('rect', {class: 'rect', width, height});
 
+const render = size => (
+    g([
+        path(`M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
+        path(`M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
+    ])
+);
+
 export default [
     {
         id: 1,
@@ -28,23 +35,36 @@ export default [
                 path(`M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
                 path(`M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
             ]));
-            svg.setAttributeNS(null, 'width', size);
-            svg.setAttributeNS(null, 'height', size);
+            svg.setAttributeNS(null, 'style', `width: ${size}px; height: ${size}px`);
         }
     },
     {
         id: 2,
         render: svg => {
-            const size = 30;
+            const size = 100;
             const truchet = new Truchet(svg, {size});
 
-            truchet.addTile(g([
-                path(`M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
-                path(`M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
-            ]));
+            truchet.addTile({
+                id: 'a',
+                render: () => render(100),
+            });
 
-            svg.setAttributeNS(null, 'width', '100%');
-            svg.setAttributeNS(null, 'height', '100%');
+            truchet.render();
+        }
+    },
+    {
+        id: 3,
+        render: svg => {
+            const size = 100;
+            const truchet = new Truchet(svg, {size}); // Minus one to create an overflow between tiles and avoid spacing
+
+            truchet.addTile({
+                id: 'a',
+                render: () => render(100),
+                rotate: [0, 90]
+            });
+
+            svg.setAttributeNS(null, 'style', 'height: 300px');
 
             truchet.render();
         }

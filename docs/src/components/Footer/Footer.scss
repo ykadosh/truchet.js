@@ -6,8 +6,18 @@ footer {
     align-items: center;
     justify-content: space-between;
 
+    @include breakpoint(small) {
+        flex-direction: column-reverse;
+    }
+
     .user-actions {
         display: flex;
+
+        @include breakpoint(small) {
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
 
         a {
             display: flex;
@@ -15,6 +25,10 @@ footer {
             margin: 0 10px;
             text-decoration: none;
             color: $color-black;
+
+            @include breakpoint(small) {
+                margin-bottom: 10px;
+            }
 
             &:hover {
                 color: $color-blue;

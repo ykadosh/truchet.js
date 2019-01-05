@@ -9,9 +9,9 @@ export default class Truchet {
         this.target = new Target(target, {tileWidth: this.options.size, tileHeight: this.options.size});
     }
 
-    addTile(tile) {
+    addTile(args) {
         const {size} = this.options;
-        this.target.registerTile(new Tile(tile, {height: size, width: size}));
+        this.target.registerTile(new Tile({...args, height: size, width: size}));
     }
 
     removeTile(id) {

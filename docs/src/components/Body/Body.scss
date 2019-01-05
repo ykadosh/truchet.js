@@ -4,4 +4,32 @@
     flex: 1;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     padding: 15px;
+
+    pre {
+        margin: 25px -15px;
+        background-color: $color-yellow;
+        padding: 15px;
+    }
+
+    code {
+        background-color: $color-yellow;
+        color: $color-blue;
+        font-size: 0.9em;
+        line-height: 1em;
+        padding: 3px 6px;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin: 1.5em 0 0.8em;
+    }
+    
+    a {
+        color: $color-blue;
+        text-decoration: none;
+    
+        &:hover {
+            box-shadow: inset 0 -2px;
+            text-shadow: 1px 1px 0 $color-white, -1px 1px 0 $color-white;
+        }
+    }
 }
