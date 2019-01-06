@@ -1,5 +1,6 @@
 import React from 'react';
 import Truchet from 'truchet';
+import GithubCorner from '../GithubCorner/GithubCorner';
 import './Header.scss';
 
 export default class Header extends React.PureComponent {
@@ -55,6 +56,7 @@ export default class Header extends React.PureComponent {
     render() {
         return (
             <header>
+                <GithubCorner/>
                 <svg className='truchet-container' ref={this.target}/>
             </header>
         );
