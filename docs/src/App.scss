@@ -1,8 +1,9 @@
 #app {
-    background-image: linear-gradient($color-foam, $color-green);
+    background-image: linear-gradient($color-foam 30%, $color-green);
     width: 100%;
     min-height: 100%;
     display: flex;
     flex-direction: column;
     color: $color-black;
+    position: relative;
 }

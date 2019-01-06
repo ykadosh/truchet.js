@@ -1,5 +1,5 @@
 footer {
-    margin: 10px 15px;
+    margin: 10px 0;
     line-height: 1em;
     font-size: 0.9em;
     display: flex;
@@ -22,12 +22,12 @@ footer {
         a {
             display: flex;
             align-items: center;
-            margin: 0 10px;
+            margin-right: 20px;
             text-decoration: none;
             color: $color-black;
 
             @include breakpoint(small) {
-                margin-bottom: 10px;
+                margin: 0 10px 10px 10px;
             }
 
             &:hover {

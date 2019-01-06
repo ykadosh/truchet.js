@@ -29,7 +29,7 @@ import Truchet from 'truchet';
 
 #### CDN
 
-Alternatively you can add a `<script>` tag in your document's head, and it will export a global `Truncate` class:
+Alternatively you can add a `<script>` tag in your document's head, and it will export a global `Truchet` class:
 
 ```
 <script src="https://unpkg.com/truchet@latest/truchet.min.js"></script>
