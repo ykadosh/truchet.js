@@ -2,7 +2,7 @@ import Tile from './Tile';
 import Target from './Target';
 import defaults from './Truchet.defaults';
 
-export default class Truchet {
+export class Truchet {
 
     constructor(target, options = {}) {
         this.options = {...defaults, ...options};
@@ -48,3 +48,5 @@ export default class Truchet {
         }
     }
 }
+
+export default Truchet;
