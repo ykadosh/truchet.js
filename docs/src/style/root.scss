@@ -9,5 +9,6 @@ html, body {
 }
 
 body {
-    overflow: auto;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
