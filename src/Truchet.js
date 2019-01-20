@@ -1,17 +1,13 @@
-import Tile from './Tile';
 import Target from './Target';
-import defaults from './Truchet.defaults';
 
 export class Truchet {
 
-    constructor(target, options = {}) {
-        this.options = {...defaults, ...options};
-        this.target = new Target(target, {tileWidth: this.options.size, tileHeight: this.options.size});
+    constructor(target, width, height, callback) {
+        this.target   = new Target(target, width, height, callback);
     }
 
-    addTile(args) {
-        const {size} = this.options;
-        this.target.registerTile(new Tile({...args, height: size, width: size}));
+    addTile(id, render) {
+        this.target.registerTile(id, render);
     }
 
     removeTile(id) {

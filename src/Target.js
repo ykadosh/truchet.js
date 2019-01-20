@@ -1,25 +1,30 @@
-import defaults from './Target.defaults';
-
 export default class Target {
     
-    constructor(element, options = {}) {
+    constructor(element, width, height, callback) {
         this.element = element;
         this.tiles = [];
-        this.pool = [];
-        this.options = {...defaults, ...options};
+        this.pool = {};
+        this.width = width; // Tile width
+        this.height = height; // Tile height
+        this.callback = callback;
     }
 
-    registerTile(tile) {
-        this.pool.push(tile);
+    registerTile(id, render) {
+        this.pool[id] = render;
     }
 
-    getRandomTile() {
-        const {pool} = this;
-        return pool[Math.floor(Math.random() * pool.length)];
+    deregisterTile(id) {
+        delete this.pool[id];
     }
 
-    drawTile(tile, row, col) {
-        this.tiles[row][col] = tile.create(col, row);
+    getTile(row, col) {
+        const props = this.callback(col * this.width, row * this.height);
+        return this.pool[props.id](props);
+    }
+
+    drawTile(row, col) {
+        const tile = this.getTile(row, col);
+        this.tiles[row][col] = tile;
         this.element.appendChild(this.tiles[row][col]);
     }
 
@@ -32,8 +37,7 @@ export default class Target {
         const {rows, cols} = this.getCurrentTileCount();
         this.tiles.push([]);
         for (let col = 0; col < cols; col++) {
-            const tile = this.getRandomTile();
-            this.drawTile(tile, rows, col);
+            this.drawTile(rows, col);
         }
     }
 
@@ -48,8 +52,7 @@ export default class Target {
     addColumn() {
         const {rows, cols} = this.getCurrentTileCount();
         for (let row = 0; row < rows; row++) {
-            const tile = this.getRandomTile();
-            this.drawTile(tile, row, cols);
+            this.drawTile(row, cols);
         }
     }
 
@@ -63,8 +66,8 @@ export default class Target {
     getTargetTileCount() {
         const {width, height} = this.element.getBoundingClientRect();
         return {
-            cols: Math.ceil(width / this.options.tileWidth), // Horizontal
-            rows: Math.ceil(height / this.options.tileHeight), // Vertical
+            cols: Math.ceil(width / this.width), // Horizontal
+            rows: Math.ceil(height / this.height), // Vertical
         };
     }
 
@@ -74,35 +77,6 @@ export default class Target {
         return {
             cols: rows > 0 ? this.tiles[0].length : 0,
             rows,
-        }
-    }
-
-    refresh() {
-        const {cols: tCols, rows: tRows} = this.getTargetTileCount();
-        const {cols: cCols, rows: cRows} = this.getCurrentTileCount();
-
-        if (tRows > cRows) {
-            for (let row = cRows; row < tRows; row++) {
-                this.addRow();
-            }
-        }
-
-        if (tRows < cRows) {
-            for (let row = tRows; row < cRows; row++) {
-                this.removeRow();
-            }
-        }
-
-        if (tCols > cCols) {
-            for (let col = cCols; col < tCols; col++) {
-                this.addColumn();
-            }
-        }
-
-        if (tCols < cCols) {
-            for (let col = tCols; col < cCols; col++) {
-                this.removeColumn();
-            }
         }
     }
 }

@@ -11,19 +11,19 @@ But enough talking, let's get started!
 
 Install with [npm](https://www.npmjs.com/), or [Yarn](https://yarnpkg.com/):
 
-```
+```sh
 npm i truchet --save
 ```
 
 Use with [Node.js](https://nodejs.org/en/), or [webpack](https://webpack.github.io/):
 
-```
+```js
 const Truchet = require('truchet');
 ```
 
 Or, if you are using ES6:
 
-```
+```js
 import Truchet from 'truchet';
 ```
 
@@ -31,7 +31,7 @@ import Truchet from 'truchet';
 
 Alternatively you can add a `<script>` tag in your document's head, and it will export a global `Truchet` class:
 
-```
+```js
 <script src="https://unpkg.com/truchet@latest/truchet.min.js"></script>
 ```
 
@@ -42,7 +42,7 @@ we'll be using SVG.
 
 You can use a library like [SVG.js](https://svgjs.com/), but for our purpose, a simple utility function will suffice:
 
-```
+```js
 // A function for creating SVG elements
 const createNode = (n, v = {}) => {
     n = document.createElementNS("http://www.w3.org/2000/svg", n);
@@ -69,27 +69,39 @@ argument in which it will render the tiles. In our case, it should be an `<svg/>
 const target = document.getElementById('target');
 const truchet = new Truchet(target, {size: 100});
 
-truchet.addTile({
-    id: 'a',
-    render: () => {
-        // We need to wrap our 2 paths in a <g/> since we can only return a single DOM element.
-        const g = createNode('g');
-        g.appendChild(createNode('path', {d: 'M 0,50 A 50,50 0 0 0 50 0'}));
-        g.appendChild(createNode('path', {d: 'M 50,100 A 50,50 0 0 1 100 50'}));
-        return g;
-    }
+truchet.addTile('a', ({x, y, rotate}) => {
+    // We need to wrap our 2 paths in a <g/> since we can only return a single DOM element.
+    const g = createNode('g');
+    g.appendChild(createNode('path', {d: 'M 0,50 A 50,50 0 0 0 50 0'}));
+    g.appendChild(createNode('path', {d: 'M 50,100 A 50,50 0 0 1 100 50'}));
+    g.style.setProperty('transform-origin', `${width/2}px ${height/2}px`);
+    g.style.setProperty('transform', `translate(${x}px, ${y}px)`);
+    return g;
 });
 
-truchet.render();
+truchet.render((x, y, col, row) => ({
+    id: 'a', x, y
+}));
 ```
 
 This looks nice, but not very exciting. Let's add some randomness to the mix by randomly rotating the tiles.
 We can do this using the `rotate` argument:
 
 ```example:3
-truchet.addTile({
-    id: 'a',
-    render: () => {...},
-    rotate: [0, 90] // This will cause the tile to randomly receive a rotation of 0 or 90 degrees.
+truchet.addTile('a', ({x, y, rotate}) => {
+    // We need to wrap our 2 paths in a <g/> since we can only return a single DOM element.
+    const g = createNode('g');
+    g.appendChild(createNode('path', {d: 'M 0,50 A 50,50 0 0 0 50 0'}));
+    g.appendChild(createNode('path', {d: 'M 50,100 A 50,50 0 0 1 100 50'}));
+    g.style.setProperty('transform-origin', `${width/2}px ${height/2}px`);
+    g.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
+    return g;
 });
+
+truchet.render((x, y) => ({
+    id: 'a',
+    rotate: [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation
+    x,
+    y,
+}));
 ```
