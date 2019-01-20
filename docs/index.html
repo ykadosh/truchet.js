@@ -14,15 +14,15 @@
 <h2 id="installation">Installation</h2>
 <h4 id="npm">NPM</h4>
 <p>Install with <a href="https://www.npmjs.com/">npm</a>, or <a href="https://yarnpkg.com/">Yarn</a>:</p>
-<pre><code class="language-undefined">npm i truchet --save</code></pre><p>Use with <a href="https://nodejs.org/en/">Node.js</a>, or <a href="https://webpack.github.io/">webpack</a>:</p>
-<pre><code class="language-undefined">const Truchet = require(&apos;truchet&apos;);</code></pre><p>Or, if you are using ES6:</p>
-<pre><code class="language-undefined">import Truchet from &apos;truchet&apos;;</code></pre><h4 id="cdn">CDN</h4>
+<pre><code class="language-sh">npm i truchet --save</code></pre><p>Use with <a href="https://nodejs.org/en/">Node.js</a>, or <a href="https://webpack.github.io/">webpack</a>:</p>
+<pre><code class="language-js">const Truchet = require(&apos;truchet&apos;);</code></pre><p>Or, if you are using ES6:</p>
+<pre><code class="language-js">import Truchet from &apos;truchet&apos;;</code></pre><h4 id="cdn">CDN</h4>
 <p>Alternatively you can add a <code>&lt;script&gt;</code> tag in your document&#39;s head, and it will export a global <code>Truchet</code> class:</p>
-<pre><code class="language-undefined">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="magical-patterns">Magical Patterns</h2>
+<pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="magical-patterns">Magical Patterns</h2>
 <p>The first thing you need to do is create a tile that is asymmetric, so that it has more than one orientation. You can use any HTML element that you like, but in the next examples
 we&#39;ll be using SVG.</p>
 <p>You can use a library like <a href="https://svgjs.com/">SVG.js</a>, but for our purpose, a simple utility function will suffice:</p>
-<pre><code class="language-undefined">// A function for creating SVG elements
+<pre><code class="language-js">// A function for creating SVG elements
 const createNode = (n, v = {}) =&gt; {
     n = document.createElementNS(&quot;http://www.w3.org/2000/svg&quot;, n);
     Object.keys(v).forEach(p =&gt; {
@@ -37,24 +37,36 @@ argument in which it will render the tiles. In our case, it should be an <code>&
 <example id="2">const target = document.getElementById(&apos;target&apos;);
 const truchet = new Truchet(target, {size: 100});
 
-truchet.addTile({
-    id: &apos;a&apos;,
-    render: () =&gt; {
-        // We need to wrap our 2 paths in a &lt;g/&gt; since we can only return a single DOM element.
-        const g = createNode(&apos;g&apos;);
-        g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 0,50 A 50,50 0 0 0 50 0&apos;}));
-        g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 50,100 A 50,50 0 0 1 100 50&apos;}));
-        return g;
-    }
+truchet.addTile(&apos;a&apos;, ({x, y, rotate}) =&gt; {
+    // We need to wrap our 2 paths in a &lt;g/&gt; since we can only return a single DOM element.
+    const g = createNode(&apos;g&apos;);
+    g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 0,50 A 50,50 0 0 0 50 0&apos;}));
+    g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 50,100 A 50,50 0 0 1 100 50&apos;}));
+    g.style.setProperty(&apos;transform-origin&apos;, `${width/2}px ${height/2}px`);
+    g.style.setProperty(&apos;transform&apos;, `translate(${x}px, ${y}px)`);
+    return g;
 });
 
-truchet.render();</example><p>This looks nice, but not very exciting. Let&#39;s add some randomness to the mix by randomly rotating the tiles.
+truchet.render((x, y, col, row) =&gt; ({
+    id: &apos;a&apos;, x, y
+}));</example><p>This looks nice, but not very exciting. Let&#39;s add some randomness to the mix by randomly rotating the tiles.
 We can do this using the <code>rotate</code> argument:</p>
-<example id="3">truchet.addTile({
+<example id="3">truchet.addTile(&apos;a&apos;, ({x, y, rotate}) =&gt; {
+    // We need to wrap our 2 paths in a &lt;g/&gt; since we can only return a single DOM element.
+    const g = createNode(&apos;g&apos;);
+    g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 0,50 A 50,50 0 0 0 50 0&apos;}));
+    g.appendChild(createNode(&apos;path&apos;, {d: &apos;M 50,100 A 50,50 0 0 1 100 50&apos;}));
+    g.style.setProperty(&apos;transform-origin&apos;, `${width/2}px ${height/2}px`);
+    g.style.setProperty(&apos;transform&apos;, `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
+    return g;
+});
+
+truchet.render((x, y) =&gt; ({
     id: &apos;a&apos;,
-    render: () =&gt; {...},
-    rotate: [0, 90] // This will cause the tile to randomly receive a rotation of 0 or 90 degrees.
-});</example>
+    rotate: [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation
+    x,
+    y,
+}));</example>
     <script src="index.min.js"></script>
   </body>
 </html>
