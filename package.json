@@ -1,7 +1,7 @@
 {
   "name": "truchet",
   "version": "1.1.0",
-  "description": "Create beautiful visual patterns with JavaScript",
+  "description": "Performantly render tile patterns",
   "main": "truchet.min.js",
   "scripts": {
     "test": "mocha \"src/**/*.test.js\" --require @babel/register",
