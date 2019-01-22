@@ -6,4 +6,4 @@ Create beautiful visual patterns with JavaScript https://ykadosh.github.io/truch
 ## Features
 * Highly performant (only updates the DOM when necessary)
 * Infinitely scalable (automatically adds/removes tiles as needed)
-* Lightweight (~5kb)
+* Lightweight (~2kb)

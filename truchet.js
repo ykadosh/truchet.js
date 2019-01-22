@@ -101,133 +101,95 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./src/Target.js
-class Target {
-    
-    constructor(element, width, height, callback) {
-        this.element = element;
-        this.tiles = [];
-        this.pool = {};
-        this.width = width; // Tile width
-        this.height = height; // Tile height
-        this.callback = callback;
-    }
+// CONCATENATED MODULE: ./src/utility/utility.js
+const random = (from, to) => (
+    Math.floor((Math.random() * Math.abs(to - from)) + Math.min(from, to))
+);
 
-    registerTile(id, render) {
-        this.pool[id] = render;
-    }
+const getType = variable => (
+    Object.prototype.toString.call(variable).replace(/(\[object |\])/g, '')
+);
 
-    deregisterTile(id) {
-        delete this.pool[id];
-    }
+const isObject = variable => (
+    'Object' === getType(variable)
+);
 
-    getTile(row, col) {
-        const props = this.callback(col * this.width, row * this.height);
-        return this.pool[props.id](props);
+const equals = (a, b) => {
+    if (![a, b].every(isObject)) {
+        return false;
     }
-
-    drawTile(row, col) {
-        const tile = this.getTile(row, col);
-        this.tiles[row][col] = tile;
-        this.element.appendChild(this.tiles[row][col]);
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    if (aKeys.length === bKeys.length) {
+        return aKeys.every(key => (
+            a[key] === b[key]
+        ));
     }
+    return false;
+};
+// CONCATENATED MODULE: ./src/utility/index.js
 
-    eraseTile(row, col) {
-        this.element.removeChild(this.tiles[row][col]);
-        this.tiles[row].splice(col, 1);
-    }
-
-    addRow() {
-        const {rows, cols} = this.getCurrentTileCount();
-        this.tiles.push([]);
-        for (let col = 0; col < cols; col++) {
-            this.drawTile(rows, col);
-        }
-    }
-
-    removeRow() {
-        const {rows, cols} = this.getCurrentTileCount();
-        for (let col = cols - 1; col >= 0; col--) {
-            this.eraseTile(rows - 1, col);
-        }
-        this.tiles.splice(rows - 1, 1);
-    }
-
-    addColumn() {
-        const {rows, cols} = this.getCurrentTileCount();
-        for (let row = 0; row < rows; row++) {
-            this.drawTile(row, cols);
-        }
-    }
-
-    removeColumn() {
-        const {rows, cols} = this.getCurrentTileCount();
-        for (let row = rows - 1; row >= 0; row--) {
-            this.eraseTile(row, cols - 1);
-        }
-    }
-
-    getTargetTileCount() {
-        const {width, height} = this.element.getBoundingClientRect();
-        return {
-            cols: Math.ceil(width / this.width), // Horizontal
-            rows: Math.ceil(height / this.height), // Vertical
-        };
-    }
-
-    getCurrentTileCount() {
-        const rows = this.tiles.length;
-
-        return {
-            cols: rows > 0 ? this.tiles[0].length : 0,
-            rows,
-        }
-    }
-}
 // CONCATENATED MODULE: ./src/Truchet.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Truchet", function() { return Truchet_Truchet; });
 
 
 class Truchet_Truchet {
 
-    constructor(target, width, height, callback) {
-        this.target   = new Target(target, width, height, callback);
+    constructor(target, width, height) {
+        this.target = target;
+        this.width  = width;
+        this.height = height;
+        this.tiles  = {};
+        this.matrix = []; // Acts as a virtual DOM
     }
 
     addTile(id, render) {
-        this.target.registerTile(id, render);
+        this.tiles[id] = render;
     }
 
     removeTile(id) {
-        this.target.deregisterTile(id);
+        delete this.tiles[id];
     }
 
-    render() {
-        const {target} = this;
-        const {cols: tCols, rows: tRows} = target.getTargetTileCount();
-        const {cols: cCols, rows: cRows} = target.getCurrentTileCount();
+    getTileCount() {
+        const {width, height} = this.target.getBoundingClientRect();
+        return {
+            cols: Math.ceil(width / this.width),
+            rows: Math.ceil(height / this.height),
+        };
+    }
 
-        if (tRows > cRows) {
-            for (let row = cRows; row < tRows; row++) {
-                target.addRow();
-            }
+    renderTile(row, column) {
+        const {props, element} = this.matrix[row][column];
+        if (typeof element !== 'undefined') {
+            this.target.removeChild(element);
         }
+        this.matrix[row][column].element = this.tiles[props.id](props);
+        this.target.appendChild(
+            this.matrix[row][column].element
+        );
+    }
 
-        if (tRows < cRows) {
-            for (let row = tRows; row < cRows; row++) {
-                target.removeRow();
+    render(callback) {
+        const {cols, rows} = this.getTileCount();
+        const {width, height} = this;
+
+        for (let r = 0; r < rows; r++) {
+            if (typeof this.matrix[r] === 'undefined') {
+                this.matrix[r] = [];
             }
-        }
+            for (let c = 0; c < cols; c++) {
+                if (typeof this.matrix[r][c] === 'undefined') {
+                    this.matrix[r][c] = {};
+                }
 
-        if (tCols > cCols) {
-            for (let col = cCols; col < tCols; col++) {
-                target.addColumn();
-            }
-        }
-
-        if (tCols < cCols) {
-            for (let col = tCols; col < cCols; col++) {
-                target.removeColumn();
+                const oldProps = this.matrix[r][c].props;
+                const newProps = callback(r, c, oldProps);
+                
+                if (!equals(oldProps, newProps)) {
+                    this.matrix[r][c].props = newProps;
+                    this.renderTile(r, c);
+                }
             }
         }
     }

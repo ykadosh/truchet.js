@@ -1,45 +1,62 @@
-import Target from './Target';
+import {equals} from './utility';
 
 export class Truchet {
 
-    constructor(target, width, height, callback) {
-        this.target   = new Target(target, width, height, callback);
+    constructor(target, width, height) {
+        this.target = target;
+        this.width  = width;
+        this.height = height;
+        this.tiles  = {};
+        this.matrix = []; // Acts as a virtual DOM
     }
 
     addTile(id, render) {
-        this.target.registerTile(id, render);
+        this.tiles[id] = render;
     }
 
     removeTile(id) {
-        this.target.deregisterTile(id);
+        delete this.tiles[id];
     }
 
-    render() {
-        const {target} = this;
-        const {cols: tCols, rows: tRows} = target.getTargetTileCount();
-        const {cols: cCols, rows: cRows} = target.getCurrentTileCount();
+    getTileCount() {
+        const {width, height} = this.target.getBoundingClientRect();
+        return {
+            cols: Math.ceil(width / this.width),
+            rows: Math.ceil(height / this.height),
+        };
+    }
 
-        if (tRows > cRows) {
-            for (let row = cRows; row < tRows; row++) {
-                target.addRow();
-            }
+    renderTile(row, column) {
+        const {props, element} = this.matrix[row][column];
+        if (typeof element !== 'undefined') {
+            this.target.removeChild(element);
         }
+        this.matrix[row][column].element = this.tiles[props.id](props);
+        this.target.appendChild(
+            this.matrix[row][column].element
+        );
+    }
 
-        if (tRows < cRows) {
-            for (let row = tRows; row < cRows; row++) {
-                target.removeRow();
+    render(callback) {
+        const {cols, rows} = this.getTileCount();
+        const {width, height} = this;
+
+        for (let r = 0; r < rows; r++) {
+            if (typeof this.matrix[r] === 'undefined') {
+                this.matrix[r] = [];
             }
-        }
+            for (let c = 0; c < cols; c++) {
+                if (typeof this.matrix[r][c] === 'undefined') {
+                    this.matrix[r][c] = {};
+                }
 
-        if (tCols > cCols) {
-            for (let col = cCols; col < tCols; col++) {
-                target.addColumn();
-            }
-        }
-
-        if (tCols < cCols) {
-            for (let col = tCols; col < cCols; col++) {
-                target.removeColumn();
+                const oldProps = this.matrix[r][c].props;
+                const newProps = callback(r, c, oldProps);
+                
+                if (!equals(oldProps, newProps)) {
+                    this.matrix[r][c].props = newProps;
+                    this.renderTile(r, c);
+                }
             }
         }
     }

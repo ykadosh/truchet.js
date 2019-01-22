@@ -12,12 +12,13 @@ export default class Background extends React.PureComponent {
 
     componentDidMount() {
         const size = 80;
-        const p = new Truchet(this.target.current, size, size, (x, y) => ({
+        const p = new Truchet(this.target.current, size, size);
+        const callback = (row, col, prevProps) => ({
             id: 'a',
-            rotate: [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation
-            x,
-            y,
-        }));
+            rotate: typeof prevProps !== 'undefined' ? prevProps.rotate : [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation
+            x: col * size,
+            y: row * size,
+        });
         
         const createNode = (n, v = {}) => {
             n = document.createElementNS("http://www.w3.org/2000/svg", n);
@@ -49,10 +50,10 @@ export default class Background extends React.PureComponent {
             return el;
         });
         
-        p.render();
+        p.render(callback);
         
         window.addEventListener('resize', () => {
-            p.render();
+            p.render(callback);
         })
     }
 

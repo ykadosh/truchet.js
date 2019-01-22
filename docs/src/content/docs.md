@@ -52,42 +52,50 @@ const createNode = (n, v = {}) => {
     return n;
 }
 ```
+  
+The `Truchet` instance expects a DOM element as its first argument in which it will render the tiles. In our case, it should be an `<svg/>` element.
+The 2nd & 3rd argument are the tile **width** & **height** respectively.
 
-Now let's create a tile. Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges, and will have a size of `100` pixels.
-We can use the above function to create a tile from 2 paths. The resulting SVG should look like this when rendered:
-
-
-```example:1
-g.appendChild(createNode('path', {d: 'M 0,50 A 50,50 0 0 0 50 0'}));
-g.appendChild(createNode('path', {d: 'M 50,100 A 50,50 0 0 1 100 50'}));
+```js
+const size = 100;
+const target = document.getElementById('target'); // Our SVG element
+const truchet = new Truchet(target, size, size});
 ```
 
-We can now use **Truchet.js** to create a visual pattern from this tile. The `Truchet` instance expects a DOM element as its first
-argument in which it will render the tiles. In our case, it should be an `<svg/>` element.
+Now let's create a tile. Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges, and will have a size of `100` pixels.
+You can use `addTile(id, generator)` to define a new tile type. The `id` is used as a handle for this tile type, and the `generator` is a function that should
+return a DOM element when called. This function receives the `props` object we pass to it from the `render` function, as we will later see.
 
-```example:2
-const target = document.getElementById('target');
-const truchet = new Truchet(target, {size: 100});
-
-truchet.addTile('a', ({x, y, rotate}) => {
+```js
+truchet.addTile('a', ({x, y}) => {
     // We need to wrap our 2 paths in a <g/> since we can only return a single DOM element.
     const g = createNode('g');
     g.appendChild(createNode('path', {d: 'M 0,50 A 50,50 0 0 0 50 0'}));
     g.appendChild(createNode('path', {d: 'M 50,100 A 50,50 0 0 1 100 50'}));
-    g.style.setProperty('transform-origin', `${width/2}px ${height/2}px`);
+    g.style.setProperty('transform-origin', `${size/2}px ${size/2}px`);
     g.style.setProperty('transform', `translate(${x}px, ${y}px)`);
     return g;
 });
+```
 
-truchet.render((x, y, col, row) => ({
-    id: 'a', x, y
+Finally, we need to call `render(callback)` to render our pattern.  
+The `render` function receives a callback that, when called, should return a props object to be passed to your tile generator function.  
+These props are used by **Truchet.js** to determine whether a tile should be rendered or not.  
+To determine that, these props are shallow compared with the tile's previous props and if they are different, the tile generator function will be called and the DOM will be updated.
+The only prop that is mandatory here is the `id`, which is used to pick the correspnding tile generator function.
+
+```example:1
+truchet.render((row, col) => ({
+    id: 'a', 
+    x: col * size, 
+    y: row * size,
 }));
 ```
 
 This looks nice, but not very exciting. Let's add some randomness to the mix by randomly rotating the tiles.
-We can do this using the `rotate` argument:
+We can do this by passing an additional prop via the `render` callback to our tile generator function:
 
-```example:3
+```js
 truchet.addTile('a', ({x, y, rotate}) => {
     // We need to wrap our 2 paths in a <g/> since we can only return a single DOM element.
     const g = createNode('g');
@@ -97,7 +105,11 @@ truchet.addTile('a', ({x, y, rotate}) => {
     g.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
     return g;
 });
+```
 
+Update the `render` function to pass a `rotate` prop:
+
+```example:2
 truchet.render((x, y) => ({
     id: 'a',
     rotate: [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation

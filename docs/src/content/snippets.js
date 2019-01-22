@@ -33,34 +33,26 @@ export default [
         id: 1,
         render: svg => {
             const size = 100;
-            svg.appendChild(g([
-                rect(100, 100),
-                path(`M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
-                path(`M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
-            ]));
-            svg.setAttributeNS(null, 'style', `width: ${size}px; height: ${size}px`);
+            const truchet = new Truchet(svg, size, size);
+
+            truchet.addTile('a', ({x, y}) => render(100, x, y));
+
+            truchet.render((row, col) => ({id: 'a', x: col * size, y: row * size}));
         }
     },
     {
         id: 2,
         render: svg => {
             const size = 100;
-            const truchet = new Truchet(svg, size, size, (x, y) => ({id: 'a', x, y}));
-
-            truchet.addTile('a', ({x, y}) => render(100, x, y));
-
-            truchet.render();
-        }
-    },
-    {
-        id: 3,
-        render: svg => {
-            const size = 100;
-            const truchet = new Truchet(svg, size, size, (x, y) => ({id: 'a', x, y, rotate: [0, 90][Math.floor(Math.random() * 2)]}));
+            const truchet = new Truchet(svg, size, size);
 
             truchet.addTile('a', ({x, y, rotate}) => render(100, x, y, rotate));
 
-            truchet.render();
+            truchet.render((row, col) => ({
+                id: 'a', 
+                x: col * size, 
+                y: row * size, 
+                rotate: [0, 90][Math.floor(Math.random() * 2)]}));
         }
     }
 ]

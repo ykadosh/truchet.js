@@ -9,11 +9,10 @@
 
     .result {
         flex-basis: 50%;
-        border-right: 4px solid $color-blue;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 15px;
+        min-height: 300px;
 
         @include breakpoint(large) {
             border-right: none;
@@ -40,12 +39,13 @@
     }
 
     .code {
+        background-color: $color-blue;
         flex-basis: 50%;
         display: flex;
         align-items: center;
         padding: 15px;
         font-family: monospace;
-        color: $color-blue;
+        color: $color-yellow;
         white-space: pre;
         overflow: scroll;
     }

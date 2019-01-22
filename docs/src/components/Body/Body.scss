@@ -6,9 +6,16 @@
     
     pre {
         margin: 25px -15px;
-        background-color: $color-yellow;
+        background-color: $color-blue;
         padding: 15px;
         overflow: auto;
+
+        code {
+            padding: 0;
+            background-color: transparent;
+            color: $color-yellow;
+            font-size: 1em;
+        }
     }
 
     code {
