@@ -22,7 +22,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
-      truchet: paths.src + '/Truchet.js'
+      truchet: paths.src + '/index.js'
     }
   },
   module: {

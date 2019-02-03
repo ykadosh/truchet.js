@@ -1,32 +1,37 @@
 import Truchet from 'truchet';
 
-const createNode = (n, v = {}) => {
-    n = document.createElementNS("http://www.w3.org/2000/svg", n);
-    Object.keys(v).forEach(p=> {
-        n.setAttributeNS(null, p, v[p]);
-    })
-    return n;
+class Tile extends Truchet.Tile {
+
+    createNode(n, v = {}) {
+        n = document.createElementNS("http://www.w3.org/2000/svg", n);
+        Object.keys(v).forEach(p=> {
+            n.setAttributeNS(null, p, v[p]);
+        })
+        return n;
+    }
+
+    mount(target) {
+        const size = this.width;
+        this.el = this.createNode('g');
+        this.el.appendChild(this.createNode('path', {class: 'path', d: `M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`}));
+        this.el.appendChild(this.createNode('path', {class: 'path', d: `M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`}));
+        this.el.style.setProperty('transform-origin', `${size/2}px ${size/2}px`);
+        target.appendChild(this.el);
+    }
+
+    render(props) {
+        const {x, y} = props;
+        this.el.style.setProperty('transform', `translate(${x}px, ${y}px)`);
+    }
 }
 
-const g = children => {
-    const n = createNode('g');
-    children.forEach(child => {
-        n.appendChild(child)
-    });
-    return n;
+class RotatableTile extends Tile {
+    render(props) {
+        const {x, y, rotate} = props;
+        this.el.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
+        return this.el;
+    }
 }
-const path = d => createNode('path', {class: 'path', d});
-const rect = (width, height) => createNode('rect', {class: 'rect', width, height});
-
-const render = (size, x, y, rotate = 0) => {
-    const el = g([
-        path(`M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
-        path(`M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
-    ]);
-    el.style.setProperty('transform-origin', `${size/2}px ${size/2}px`);
-    el.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
-    return el;
-};
 
 export default [
     {
@@ -34,9 +39,7 @@ export default [
         render: svg => {
             const size = 100;
             const truchet = new Truchet(svg, size, size);
-
-            truchet.addTile('a', ({x, y}) => render(100, x, y));
-
+            truchet.addTile('a', Tile);
             truchet.render((row, col) => ({id: 'a', x: col * size, y: row * size}));
         }
     },
@@ -46,13 +49,14 @@ export default [
             const size = 100;
             const truchet = new Truchet(svg, size, size);
 
-            truchet.addTile('a', ({x, y, rotate}) => render(100, x, y, rotate));
+            truchet.addTile('a', RotatableTile);
 
             truchet.render((row, col) => ({
                 id: 'a', 
                 x: col * size, 
                 y: row * size, 
-                rotate: [0, 90][Math.floor(Math.random() * 2)]}));
+                rotate: [0, 90][Math.floor(Math.random() * 2)]
+            }));
         }
     }
 ]

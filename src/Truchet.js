@@ -1,6 +1,6 @@
 import {equals} from './utility';
 
-export class Truchet {
+export default class Truchet {
 
     constructor(target, width, height) {
         this.target = target;
@@ -10,8 +10,8 @@ export class Truchet {
         this.matrix = []; // Acts as a virtual DOM
     }
 
-    addTile(id, render) {
-        this.tiles[id] = render;
+    addTile(id, cls) {
+        this.tiles[id] = cls;
     }
 
     removeTile(id) {
@@ -27,20 +27,32 @@ export class Truchet {
     }
 
     renderTile(row, column) {
-        const {props, element} = this.matrix[row][column];
-        if (typeof element !== 'undefined') {
-            this.target.removeChild(element);
+        const {props, tile} = this.matrix[row][column];
+        const {target, width, height} = this;
+        if (typeof tile === 'undefined') {
+            this.matrix[row][column].tile = new this.tiles[props.id](width, height);
+            this.matrix[row][column].tile.mount(target);
         }
-        this.matrix[row][column].element = this.tiles[props.id](props);
-        this.target.appendChild(
-            this.matrix[row][column].element
-        );
+        this.matrix[row][column].tile.render(props);
     }
 
-    render(callback) {
+    render(...args) {
         const {cols, rows} = this.getTileCount();
-        const {width, height} = this;
 
+        // Render a single tile
+        if (args.length === 3) {
+            const [r, c, callback] = args;
+            const oldProps = this.matrix[r][c].props;
+            const newProps = callback(oldProps);
+
+            if (!equals(oldProps, newProps)) {
+                this.matrix[r][c].props = newProps;
+                this.renderTile(r, c);
+            }
+            return;
+        }
+
+        // Render all tiles
         for (let r = 0; r < rows; r++) {
             if (typeof this.matrix[r] === 'undefined') {
                 this.matrix[r] = [];
@@ -51,7 +63,7 @@ export class Truchet {
                 }
 
                 const oldProps = this.matrix[r][c].props;
-                const newProps = callback(r, c, oldProps);
+                const newProps = args[0](r, c, oldProps);
                 
                 if (!equals(oldProps, newProps)) {
                     this.matrix[r][c].props = newProps;
@@ -61,5 +73,3 @@ export class Truchet {
         }
     }
 }
-
-export default Truchet;

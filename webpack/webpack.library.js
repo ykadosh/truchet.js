@@ -4,8 +4,8 @@ const {hasArg} = require('./webpack.utility');
 
 module.exports = {
   entry: {
-    'truchet.js': paths.src + '/Truchet.js',
-    'truchet.min.js': paths.src + '/Truchet.js',
+    'truchet.js': paths.src + '/index.js',
+    'truchet.min.js': paths.src + '/index.js',
   },
   devtool: hasArg('production') ? false : 'eval-source-map',
   mode: hasArg('production') ? 'production' : 'development',

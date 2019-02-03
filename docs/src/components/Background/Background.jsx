@@ -1,5 +1,6 @@
 import React from 'react';
 import Truchet from 'truchet';
+import BackgroundTile from './Background.tile';
 import './Background.scss';
 
 export default class Background extends React.PureComponent {
@@ -12,48 +13,32 @@ export default class Background extends React.PureComponent {
 
     componentDidMount() {
         const size = 80;
-        const p = new Truchet(this.target.current, size, size);
-        const callback = (row, col, prevProps) => ({
+        const truchet = new Truchet(this.target.current, size, size);
+        const random = (min, max) => min + Math.floor(Math.random() * (max - min));
+        
+        truchet.addTile('a', BackgroundTile);
+        truchet.render((row, col) => ({
             id: 'a',
-            rotate: typeof prevProps !== 'undefined' ? prevProps.rotate : [0, 90][Math.floor(Math.random() * 2)], // Randomly toggle between 0 and 90 degree rotation
+            rotate: [0, 90][random(0, 2)], // Randomly toggle between 0 and 90 degree rotation
             x: col * size,
             y: row * size,
-        });
-        
-        const createNode = (n, v = {}) => {
-            n = document.createElementNS("http://www.w3.org/2000/svg", n);
-            Object.keys(v).forEach(p=> {
-                n.setAttributeNS(null, p, v[p]);
-            })
-            return n;
-        }
-        
-        const g = children => {
-            const n = createNode('g');
-            children.forEach(child => {
-                n.appendChild(child)
-            });
-            return n;
-        }
-        const path = (_class, d) => createNode('path', {class: _class, d});
-        const rect = (_class, width, height) => createNode('rect', {class: _class, width, height});
-        const circle = (_class, cx, cy, r) => createNode('circle', {class: _class, cx, cy, r});
-        
-        p.addTile('a', ({x, y, rotate}) => {
-            const el = g([
-                // rect('rect', 100, 100),
-                path('arc', `M 0,${size/2} A ${size/2},${size/2} 0 0 0 ${size/2} 0`),
-                path('arc', `M ${size/2},${size} A ${size/2},${size/2} 0 0 1 ${size} ${size/2}`),
-            ]);
-            el.style.setProperty('transform-origin', `${size/2}px ${size/2}px`);
-            el.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
-            return el;
-        });
-        
-        p.render(callback);
+        }));
+
+        setInterval(() => {
+            const {cols, rows} = truchet.getTileCount();
+            truchet.render(random(1, rows - 1), random(1, cols - 1), prevProps => ({
+                ...prevProps,
+                rotate: prevProps.rotate === 0 ? 90 : 0,
+            }));
+        }, 500);
         
         window.addEventListener('resize', () => {
-            p.render(callback);
+            truchet.render((row, col, prevProps) => ({
+                id: 'a',
+                rotate: typeof prevProps !== 'undefined' ? prevProps.rotate : [0, 90][random(0, 2)], // Only update when necessary
+                x: col * size,
+                y: row * size,
+            }));
         })
     }
 

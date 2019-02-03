@@ -22,13 +22,6 @@
         svg {
             width: 100%;
             height: 100%;
-            
-            .rect {
-                stroke: $color-blue;
-                stroke-width: 2px;
-                stroke-dasharray: 6px 3px;
-                fill: none;
-            }
 
             .path {
                 stroke: $color-blue;
