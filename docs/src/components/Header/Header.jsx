@@ -9,7 +9,6 @@ export default class Header extends React.PureComponent {
         return (
             <header>
                 <GithubCorner/>
-                <Logo/>
             </header>
         );
     }

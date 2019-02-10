@@ -11,10 +11,38 @@
             transition: all 0.5s ease-out;
         }
     
-        path {
+        .arc {
             stroke: $color-green;
-            stroke-width: 10px;
+            stroke-width: 6px;
             fill: none;
+        }
+
+        .fill {
+            fill: $color-green;
+            opacity: 0;
+
+            &.visible {
+                opacity: 1;
+            }
+        }
+    }
+
+    .text {
+        position: absolute;
+        top: 250px / 2 - 32px;
+        left: 50%;
+        margin-left: -100px;
+        font-size: 4em;
+        font-weight: 900;
+        line-height: 1em;
+        color: $color-green;
+        text-shadow: 5px 0 10px $color-foam,
+                     0 5px 10px $color-foam,
+                     -5px 0 10px $color-foam,
+                     0 -5px 10px $color-foam;
+
+        @include breakpoint(small) {
+            margin-left: -175px;
         }
     }
 

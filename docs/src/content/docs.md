@@ -1,5 +1,5 @@
 **Truchet.js** is a tiny library for performantly rendering tile patterns using JavaScript.
-You control which tile is rendered, when it is rendered, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.
+You control which tile is rendered, when, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.
 
 ## Installation
 
@@ -25,7 +25,7 @@ import Truchet from 'truchet';
 
 #### CDN
 
-Alternatively you can add a `<script>` tag in your document's head, and it will export a global `Truchet` class:
+Alternatively, you can add a `<script>` tag in your document's head, and it will export a global `Truchet` class:
 
 ```js
 <script src="https://unpkg.com/truchet@latest/truchet.min.js"></script>
@@ -59,8 +59,8 @@ class MyTile extends Truchet.Tile {
 }
 ```
 
-To make intrestic patterns, we need to create a tile that is asymmetric, so that it has more than one orientation. 
-You can use any HTML element that you like, but in the next examples we'll be using SVG.
+To make interesting patterns, we need to create a tile that is asymmetric, so that it has more than one orientation. 
+You can use any HTML element that you like, but in the next examples, we'll be using SVG.
 
 You can use a library like [SVG.js](https://svgjs.com/), but for our purpose, a simple utility function will suffice:
 
@@ -84,7 +84,7 @@ class MyTile extends Truchet.Tile {
 }
 ```
 
-Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges, and will have a size of `100` pixels.
+Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges and will have a size of `100` pixels.
 We will use the `mount` method to create it, and append it to the target:
 
 ```js
@@ -136,7 +136,7 @@ Finally, we need to call `render(callback)` to render our pattern.
 The `render` function receives a callback that, when called, should return a props object to be passed to your tile class `render` method.
 These props are used by **Truchet.js** to determine whether a tile should be rendered or not.  
 To determine that, these props are shallow compared with the tile's previous props and if they are different, the tile's `render` method will be called and the DOM will be updated.
-The only prop that is mandatory here is the `id`, which is used to pick the correspnding tile class.
+The only prop that is mandatory here is the `id`, which is used to pick the corresponding tile class.
 
 ```example:1
 truchet.render((row, col) => ({
