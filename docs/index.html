@@ -2,32 +2,31 @@
 <html lang="en-US">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,900" rel="stylesheet">
     <meta charset="utf-8">
     <title>Truchet.js</title>
     <meta name="description" content="Performantly render tile patterns">
     <meta name="keywords" content="Truchet,Tile,Patterns,HTML,CSS,JavaScript,Library">
-    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133703713-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'UA-133703713-1');
     </script>
   </head>
   <body>
     <p><strong>Truchet.js</strong> is a tiny library for performantly rendering tile patterns using JavaScript.
-You control which tile is rendered, when it is rendered, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.</p>
+You control which tile is rendered, when, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.</p>
 <h2 id="installation">Installation</h2>
 <h4 id="npm">NPM</h4>
 <p>Install with <a href="https://www.npmjs.com/">npm</a>, or <a href="https://yarnpkg.com/">Yarn</a>:</p>
 <pre><code class="language-sh">npm i truchet --save</code></pre><p>Use with <a href="https://nodejs.org/en/">Node.js</a>, or <a href="https://webpack.github.io/">webpack</a>:</p>
 <pre><code class="language-js">const Truchet = require(&apos;truchet&apos;);</code></pre><p>Or, if you are using ES6:</p>
 <pre><code class="language-js">import Truchet from &apos;truchet&apos;;</code></pre><h4 id="cdn">CDN</h4>
-<p>Alternatively you can add a <code>&lt;script&gt;</code> tag in your document&#39;s head, and it will export a global <code>Truchet</code> class:</p>
+<p>Alternatively, you can add a <code>&lt;script&gt;</code> tag in your document&#39;s head, and it will export a global <code>Truchet</code> class:</p>
 <pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="truchet-tiles">Truchet Tiles</h2>
 <p>Truchet tiles are square tiles decorated in such a way that when they are placed in a random orientation on a plane, they create visually appealing patterns.
 In <strong>Truchet.js</strong> each tile is a class that inherits from <code>Truchet.Tile</code>:</p>
@@ -45,8 +44,8 @@ class MyTile extends Truchet.Tile {
     mount(target) {...}
 
     render(props) {...}
-}</code></pre><p>To make intrestic patterns, we need to create a tile that is asymmetric, so that it has more than one orientation. 
-You can use any HTML element that you like, but in the next examples we&#39;ll be using SVG.</p>
+}</code></pre><p>To make interesting patterns, we need to create a tile that is asymmetric, so that it has more than one orientation. 
+You can use any HTML element that you like, but in the next examples, we&#39;ll be using SVG.</p>
 <p>You can use a library like <a href="https://svgjs.com/">SVG.js</a>, but for our purpose, a simple utility function will suffice:</p>
 <pre><code class="language-js">import Truchet from &apos;truchet&apos;;
 
@@ -64,7 +63,7 @@ class MyTile extends Truchet.Tile {
     mount(target) {...}
 
     render(props) {...}
-}</code></pre><p>Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges, and will have a size of <code>100</code> pixels.
+}</code></pre><p>Our tile will consist of 2 arcs that begin and end at the center of 2 adjacent edges and will have a size of <code>100</code> pixels.
 We will use the <code>mount</code> method to create it, and append it to the target:</p>
 <pre><code class="language-js">class MyTile extends Truchet.Tile {
     ...
@@ -94,7 +93,7 @@ const target = document.getElementById(&apos;target&apos;); // Our SVG element
 const truchet = new Truchet(target, size, size});</code></pre><p>You can use <code>addTile(id, cls)</code> to define a new tile type. The <code>id</code> is used as a handle for this tile type, and the <code>cls</code> is a class that inherits from <code>Truchet.Tile</code>.</p>
 <pre><code class="language-js">truchet.addTile(&apos;my-tile&apos;, MyTile);</code></pre><p>Finally, we need to call <code>render(callback)</code> to render our pattern.<br>The <code>render</code> function receives a callback that, when called, should return a props object to be passed to your tile class <code>render</code> method.
 These props are used by <strong>Truchet.js</strong> to determine whether a tile should be rendered or not.<br>To determine that, these props are shallow compared with the tile&#39;s previous props and if they are different, the tile&#39;s <code>render</code> method will be called and the DOM will be updated.
-The only prop that is mandatory here is the <code>id</code>, which is used to pick the correspnding tile class.</p>
+The only prop that is mandatory here is the <code>id</code>, which is used to pick the corresponding tile class.</p>
 <example id="1">truchet.render((row, col) =&gt; ({
     id: &apos;my-tile&apos;, 
     x: col * size, 
