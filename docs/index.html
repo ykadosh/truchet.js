@@ -20,6 +20,16 @@
   <body>
     <p><strong>Truchet.js</strong> is a tiny library for performantly rendering tile patterns using JavaScript.
 You control which tile is rendered, when, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.</p>
+<h2 id="examples">Examples</h2>
+<div class="examples">
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="KJewZq" data-pen-title="Truchet.js Basic Example"></div>
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="aXKoJo" data-pen-title="Truchet Loader"></div>
+</div>
+<div class="examples">
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="ErRZeX" data-pen-title="Truchet.js Logo"></div>
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="ZVEXJR" data-pen-title="Truchet Miles"></div>
+</div>
+
 <h2 id="installation">Installation</h2>
 <h4 id="npm">NPM</h4>
 <p>Install with <a href="https://www.npmjs.com/">npm</a>, or <a href="https://yarnpkg.com/">Yarn</a>:</p>
@@ -27,7 +37,7 @@ You control which tile is rendered, when, and how, by passing around lists of pr
 <pre><code class="language-js">const Truchet = require(&apos;truchet&apos;);</code></pre><p>Or, if you are using ES6:</p>
 <pre><code class="language-js">import Truchet from &apos;truchet&apos;;</code></pre><h4 id="cdn">CDN</h4>
 <p>Alternatively, you can add a <code>&lt;script&gt;</code> tag in your document&#39;s head, and it will export a global <code>Truchet</code> class:</p>
-<pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="truchet-tiles">Truchet Tiles</h2>
+<pre><code class="language-js">&lt;script src=&quot;https://unpkg.com/truchet@latest/truchet.min.js&quot;&gt;&lt;/script&gt;</code></pre><h2 id="getting-started">Getting Started</h2>
 <p>Truchet tiles are square tiles decorated in such a way that when they are placed in a random orientation on a plane, they create visually appealing patterns.
 In <strong>Truchet.js</strong> each tile is a class that inherits from <code>Truchet.Tile</code>:</p>
 <pre><code class="language-js">import Truchet from &apos;truchet&apos;;
@@ -115,5 +125,6 @@ We can do this by passing an additional prop via the <code>render</code> callbac
     y,
 }));</example>
     <script src="index.min.js"></script>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
   </body>
 </html>

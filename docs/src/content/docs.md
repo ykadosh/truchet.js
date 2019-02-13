@@ -1,6 +1,17 @@
 **Truchet.js** is a tiny library for performantly rendering tile patterns using JavaScript.
 You control which tile is rendered, when, and how, by passing around lists of props which are used by the library to determine whether a change has been made, and a re-render is due.
 
+## Examples
+
+<div class="examples">
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="KJewZq" data-pen-title="Truchet.js Basic Example"></div>
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="aXKoJo" data-pen-title="Truchet Loader"></div>
+</div>
+<div class="examples">
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="ErRZeX" data-pen-title="Truchet.js Logo"></div>
+<div class="codepen" data-height="350" data-theme-id="36126" data-default-tab="result" data-user="ykadosh" data-slug-hash="ZVEXJR" data-pen-title="Truchet Miles"></div>
+</div>
+
 ## Installation
 
 #### NPM
@@ -31,7 +42,7 @@ Alternatively, you can add a `<script>` tag in your document's head, and it will
 <script src="https://unpkg.com/truchet@latest/truchet.min.js"></script>
 ```
 
-## Truchet Tiles
+## Getting Started
 
 Truchet tiles are square tiles decorated in such a way that when they are placed in a random orientation on a plane, they create visually appealing patterns.
 In **Truchet.js** each tile is a class that inherits from `Truchet.Tile`:

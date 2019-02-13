@@ -12,3 +12,12 @@ body {
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
 }
+
+.examples {
+    display: flex;
+    margin: 0 -15px;
+
+    .cp_embed_wrapper {
+        flex: 1;
+    }
+}

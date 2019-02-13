@@ -26,6 +26,8 @@ export default class BackgroundTile extends Truchet.Tile {
     render(props) {
         const {x, y, rotate, fill} = props;
         this.el.style.setProperty('transform', `translate(${x}px, ${y}px) rotate(${rotate}deg)`);
+        this.fill1.classList.remove('visible');
+        this.fill2.classList.remove('visible');
         if (fill === 1) {
             this.fill1.classList.add('visible');
         }
